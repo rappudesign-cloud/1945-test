@@ -22,7 +22,11 @@ body {
     box-shadow:0 20px 40px rgba(0,0,0,0.15);
     position:relative;
     padding:32px;
+    display: none; /* 기본적으로 숨김 */
 }
+
+/* 첫 화면은 보여야 함 */
+#start { display: block; }
 
 /* 이중 테두리 */
 .poster::after{
@@ -30,6 +34,7 @@ body {
     position:absolute;
     inset:8px;
     border:1px solid #d6d0c4;
+    pointer-events: none; /* 테두리가 클릭을 방해하지 않도록 설정 */
 }
 
 /* 타이틀 */
@@ -44,22 +49,31 @@ body {
     background:#7a0c0c;
     color:white;
     transition:0.2s;
+    cursor: pointer;
+    position: relative;
+    z-index: 10;
 }
 .btn:hover {
     background:#5a0808;
     transform:translateY(-2px);
 }
 
-/* 선택지 */
+/* 선택지 스타일 */
 .answer {
-    border:1px solid #ccc;
-    padding:14px;
-    margin-bottom:8px;
-    transition:0.2s;
+    width: 100%;
+    border: 1px solid #ccc;
+    padding: 14px;
+    margin-bottom: 12px;
+    transition: 0.2s;
+    text-align: left;
+    background: white;
+    cursor: pointer;
+    position: relative;
+    z-index: 10;
 }
 .answer:hover {
-    border-color:black;
-    background:#f5f5f5;
+    border-color: black;
+    background: #f5f5f5;
 }
 
 /* 결과 이미지 */
@@ -85,168 +99,145 @@ body {
 
 <div class="w-full max-w-md">
 
-<!-- 시작 -->
 <div id="start" class="poster text-center">
-<p class="text-xs tracking-widest text-gray-500 mb-2">2026 동서대학교 연기과 3학년 1학기 정기 워크숍</p>
-
-<h1 class="title text-5xl mb-6">1 9 4 5</h1>
-
-<p class="text-gray-600 mb-10 leading-relaxed">
-해방 직후,<br>
-당신은 어떤 선택을 하며 살아남았을까요
-</p>
-
-<button onclick="startQuiz()" class="btn w-full py-4 text-lg">
-테스트 시작
-</button>
+    <p class="text-xs tracking-widest text-gray-500 mb-2">2026 동서대학교 연기과 3학년 1학기 정기 워크숍</p>
+    <h1 class="title text-5xl mb-6">1 9 4 5</h1>
+    <p class="text-gray-600 mb-10 leading-relaxed">
+    해방 직후,<br>
+    당신은 어떤 선택을 하며 살아남았을까요
+    </p>
+    <button onclick="startQuiz()" class="btn w-full py-4 text-lg font-bold">
+    테스트 시작
+    </button>
 </div>
 
-<!-- 질문 -->
-<div id="quiz" class="poster" style="display:none;">
-<h2 id="question" class="mb-8 text-xl font-bold"></h2>
-<div id="answers"></div>
+<div id="quiz" class="poster">
+    <h2 id="question" class="mb-8 text-xl font-bold leading-snug"></h2>
+    <div id="answers"></div>
 </div>
 
-<!-- 결과 -->
-<div id="result" class="poster text-center" style="display:none;">
-
-<p class="text-sm text-gray-500 mb-2">당신과 닮은 인물</p>
-
-<h1 id="result-title" class="title text-3xl mb-6"></h1>
-
-<div class="img-wrap mb-6" id="imgWrap">
-<img id="result-img" class="w-full">
-</div>
-
-<p id="result-desc" class="desc mb-6 text-left"></p>
-
-<p id="cta-text" class="text-sm text-gray-600 mb-4"></p>
-
-<a href="https://forms.gle/hQindGxBDH64uSWC8"
-class="btn block py-3 mb-2">
-🎟 공연 보러 가기
-</a>
-
-<button onclick="location.reload()" class="w-full border py-2">
-다시하기
-</button>
-
+<div id="result" class="poster text-center">
+    <p class="text-sm text-gray-500 mb-2">당신과 닮은 인물</p>
+    <h1 id="result-title" class="title text-3xl mb-6"></h1>
+    <div class="img-wrap mb-6" id="imgWrap">
+        <img id="result-img" class="w-full rounded-sm shadow-md">
+    </div>
+    <p id="result-desc" class="desc mb-6 text-left text-sm"></p>
+    <p id="cta-text" class="text-sm text-gray-600 mb-4 font-bold"></p>
+    <a href="https://forms.gle/hQindGxBDH64uSWC8" target="_blank" class="btn block py-3 mb-2 text-center no-underline">
+    🎟 공연 보러 가기
+    </a>
+    <button onclick="location.reload()" class="w-full border py-2 text-sm text-gray-500 hover:bg-gray-100">
+    다시하기
+    </button>
 </div>
 
 </div>
 
 <script>
-
-// ===== 기존 안정 로직 그대로 유지 =====
-
 const questions = [
-{q:"낯선 곳에 떨어졌다",a:[{t:"생존",p:"만철"},{t:"질서",p:"최주임"},{t:"가족",p:"순남"},{t:"관망",p:"미즈코"}]},
-{q:"문제 발생",a:[{t:"제압",p:"보안대원"},{t:"대화",p:"원창"},{t:"계산",p:"선녀"},{t:"도움",p:"훈이"}]},
-{q:"가치",a:[{t:"생존",p:"끝순"},{t:"신념",p:"영호"},{t:"가족",p:"이노인"},{t:"보호",p:"명숙"}]},
-{q:"의심",a:[{t:"논리",p:"원창"},{t:"위협",p:"장씨"},{t:"침묵",p:"미즈코"},{t:"이용",p:"선녀"}]},
-{q:"기차",a:[{t:"선점",p:"만철"},{t:"배려",p:"명숙"},{t:"가족",p:"순남"},{t:"타이밍",p:"최주임"}]},
-{q:"아이들",a:[{t:"돌봄",p:"숙이"},{t:"먹을것",p:"옥이"},{t:"회피",p:"끝순"},{t:"무시",p:"장씨"}]},
-{q:"과거",a:[{t:"외면",p:"유코"},{t:"버팀",p:"이노인"},{t:"보호",p:"명숙"},{t:"생존",p:"만철"}]},
-{q:"선택",a:[{t:"희생",p:"원창"},{t:"자기",p:"선녀"},{t:"의리",p:"훈이"},{t:"고민",p:"영호"}]}
+    {q:"낯선 곳에 떨어졌다",a:[{t:"생존",p:"만철"},{t:"질서",p:"최주임"},{t:"가족",p:"순남"},{t:"관망",p:"미즈코"}]},
+    {q:"문제 발생",a:[{t:"제압",p:"보안대원"},{t:"대화",p:"원창"},{t:"계산",p:"선녀"},{t:"도움",p:"훈이"}]},
+    {q:"가치",a:[{t:"생존",p:"끝순"},{t:"신념",p:"영호"},{t:"가족",p:"이노인"},{t:"보호",p:"명숙"}]},
+    {q:"의심",a:[{t:"논리",p:"원창"},{t:"위협",p:"장씨"},{t:"침묵",p:"미즈코"},{t:"이용",p:"선녀"}]},
+    {q:"기차",a:[{t:"선점",p:"만철"},{t:"배려",p:"명숙"},{t:"가족",p:"순남"},{t:"타이밍",p:"최주임"}]},
+    {q:"아이들",a:[{t:"돌봄",p:"숙이"},{t:"먹을것",p:"옥이"},{t:"회피",p:"끝순"},{t:"무시",p:"장씨"}]},
+    {q:"과거",a:[{t:"외면",p:"유코"},{t:"버팀",p:"이노인"},{t:"보호",p:"명숙"},{t:"생존",p:"만철"}]},
+    {q:"선택",a:[{t:"희생",p:"원창"},{t:"자기",p:"선녀"},{t:"의리",p:"훈이"},{t:"고민",p:"영호"}]}
 ];
 
 const results = {
-"원창":{t:"원창형 인간",d:"공동체를 이끄는 리더",i:"http://bit.ly/4cAsD2w"},
-"순남":{t:"순남형 인간",d:"가족을 지키는 사람",i:"https://bit.ly/4mSnRAD"},
-"명숙":{t:"명숙형 인간",d:"지키는 선택",i:"https://bit.ly/4tJEmlh"},
-"미즈코":{t:"미즈코형 인간",d:"경계에 선 존재",i:"https://bit.ly/4ebjfU1"},
-"만철":{t:"만철형 인간",d:"생존 전략가",i:"https://bit.ly/4eJ3sfh"},
-"끝순":{t:"끝순형 인간",d:"버티는 힘",i:"https://zrr.kr/kACTvt"},
-"선녀":{t:"선녀형 인간",d:"현실적 선택",i:"https://zrr.kr/IuV4ns"},
-"장씨":{t:"장씨형 인간",d:"강압적 질서",i:"https://zrr.kr/v67C5W"},
-"이노인":{t:"이노인형 인간",d:"버팀목",i:"https://zrr.kr/GzTyOG"},
-"숙이":{t:"숙이형 인간",d:"희망",i:"https://zrr.kr/DICZ7E"},
-"옥이":{t:"옥이형 인간",d:"순수",i:"https://zrr.kr/HVl6HJ"},
-"훈이":{t:"훈이형 인간",d:"의리",i:"https://zrr.kr/QNJdTt"},
-"영호":{t:"영호형 인간",d:"고뇌",i:"https://zrr.kr/kT1d1l"},
-"최주임":{t:"최주임형 인간",d:"관리",i:"https://zrr.kr/dqWJwu"},
-"보안대원":{t:"질서형 인간",d:"규율 유지",i:"https://zrr.kr/dqWJwu"},
-"유코":{t:"유코형 인간",d:"상처",i:"https://zrr.kr/J8OoHI"}
+    "원창":{t:"원창형 인간",d:"한글 강습회를 열었던 원창처럼 당신은 공동체를 이끄는 리더입니다.",i:"http://bit.ly/4cAsD2w"},
+    "순남":{t:"순남형 인간",d:"명숙의 친구이자 원창의 아내. 당신은 가족을 지키는 따뜻한 마음을 가졌습니다.",i:"https://bit.ly/4mSnRAD"},
+    "명숙":{t:"명숙형 인간",d:"비밀을 품고서라도 소중한 사람을 끝까지 지키는 강인한 수호자입니다.",i:"https://bit.ly/4tJEmlh"},
+    "미즈코":{t:"미즈코형 인간",d:"불안한 현실 속에서도 명숙에게 의지하며 끝내 살아남으려 노력합니다.",i:"https://bit.ly/4ebjfU1"},
+    "만철":{t:"만철형 인간",d:"이노인의 아들. 어떤 상황에서도 가족의 생존을 최우선으로 생각하는 현실파입니다.",i:"https://bit.ly/4eJ3sfh"},
+    "끝순":{t:"끝순형 인간",d:"만철의 아내. 척박한 수용소 생활을 지독한 생활력으로 버텨내는 힘이 있습니다.",i:"https://zrr.kr/kACTvt"},
+    "선녀":{t:"선녀형 인간",d:"아편에 취해 과거를 잊으려 하는 포주. 현실적인 이득을 위해 움직입니다.",i:"https://zrr.kr/IuV4ns"},
+    "장씨":{t:"장씨형 인간",d:"선녀의 연인. 타인을 엄격하게 검열하며 강압적인 질서를 강조합니다.",i:"https://zrr.kr/v67C5W"},
+    "이노인":{t:"이노인형 인간",d:"만철의 아버지. 고향 땅을 밟겠다는 일념으로 세월을 견뎌내는 어른입니다.",i:"https://zrr.kr/GzTyOG"},
+    "숙이":{t:"숙이형 인간",d:"원창과 순남의 큰딸. 부모님을 도우며 희망을 잃지 않는 미래의 상징입니다.",i:"https://zrr.kr/DICZ7E"},
+    "옥이":{t:"옥이형 인간",d:"원창과 순남의 막내 딸. 해맑은 순수함으로 가족의 웃음을 책임집니다.",i:"https://zrr.kr/HVl6HJ"},
+    "훈이":{t:"훈이형 인간",d:"원창의 친구. 남의 일도 내 일처럼 돕는 의리 넘치는 청년입니다.",i:"https://zrr.kr/QNJdTt"},
+    "영호":{t:"영호형 인간",d:"수용소의 비극 속에서 끊임없이 고민하고 고뇌하는 정직한 영혼입니다.",i:"https://zrr.kr/kT1d1l"},
+    "최주임":{t:"최주임형 인간",d:"구제소 관리자. 변화하는 권력 구조 사이에서 질서를 유지하려 애씁니다.",i:"https://zrr.kr/dqWJwu"},
+    "보안대원":{t:"질서형 인간",d:"수용소의 치안을 담당하며 냉정하게 규율을 집행합니다.",i:"https://zrr.kr/dqWJwu"},
+    "유코":{t:"유코형 인간",d:"버려진 이들의 상처를 상징하며, 정체를 위협하는 긴장감을 주는 존재입니다.",i:"https://zrr.kr/J8OoHI"}
 };
 
 const ctaMap = {
-"원창":"사람들을 이끄는 선택의 결말을 확인하세요",
-"만철":"살아남는 선택의 끝을 확인하세요",
-"명숙":"지키는 선택이 만든 결과를 보세요",
-"순남":"가족을 위한 선택의 결말을 확인하세요",
-"미즈코":"불안 속 생존의 이야기를 확인하세요",
-"끝순":"버텨낸 삶의 끝을 확인하세요",
-"선녀":"현실적 선택의 대가를 확인하세요",
-"장씨":"강한 선택이 만든 결과를 보세요",
-"이노인":"끝까지 버틴 삶의 결말을 확인하세요",
-"숙이":"희망이 만든 미래를 확인하세요",
-"옥이":"순수한 존재의 이야기를 확인하세요",
-"훈이":"의리를 지킨 선택의 결과를 보세요",
-"영호":"고민 끝 선택의 결말을 확인하세요",
-"최주임":"질서를 유지한 선택의 결과를 보세요",
-"보안대원":"규율을 지킨 선택의 결과를 확인하세요",
-"유코":"버려진 이들의 이야기를 확인하세요"
+    "원창":"사람들을 이끄는 선택의 결말을 확인하세요",
+    "만철":"살아남는 선택의 끝을 확인하세요",
+    "명숙":"지키는 선택이 만든 결과를 보세요",
+    "순남":"가족을 위한 선택의 결말을 확인하세요",
+    "미즈코":"불안 속 생존의 이야기를 확인하세요",
+    "끝순":"버텨낸 삶의 끝을 확인하세요",
+    "선녀":"현실적 선택의 대가를 확인하세요",
+    "장씨":"강한 선택이 만든 결과를 보세요",
+    "이노인":"끝까지 버틴 삶의 결말을 확인하세요",
+    "숙이":"희망이 만든 미래를 확인하세요",
+    "옥이":"순수한 존재의 이야기를 확인하세요",
+    "훈이":"의리를 지킨 선택의 결과를 보세요",
+    "영호":"고민 끝 선택의 결말을 확인하세요",
+    "최주임":"질서를 유지한 선택의 결과를 보세요",
+    "보안대원":"규율을 지킨 선택의 결과를 확인하세요",
+    "유코":"버려진 이들의 이야기를 확인하세요"
 };
 
-let i=0;
+let currentIndex=0;
 let scores={};
 
 function startQuiz(){
-document.getElementById('start').style.display='none';
-document.getElementById('quiz').style.display='block';
-showQ();
+    document.getElementById('start').style.display='none';
+    document.getElementById('quiz').style.display='block';
+    showQ();
 }
 
 function showQ(){
-const q=questions[i];
-document.getElementById('question').innerText=q.q;
+    const q=questions[currentIndex];
+    document.getElementById('question').innerText=q.q;
 
-const box=document.getElementById('answers');
-box.innerHTML="";
+    const box=document.getElementById('answers');
+    box.innerHTML="";
 
-q.a.forEach(a=>{
-const b=document.createElement('button');
-b.innerText=a.t;
-b.className="answer";
-b.onclick=function(){ next(a.p); };
-box.appendChild(b);
-});
+    q.a.forEach(answer=>{
+        const b=document.createElement('button');
+        b.innerText=answer.t;
+        b.className="answer";
+        b.onclick=function(){ next(answer.p); };
+        box.appendChild(b);
+    });
 }
 
-function next(p){
-scores[p]=(scores[p]||0)+1;
-i++;
+function next(person){
+    scores[person]=(scores[person]||0)+1;
+    currentIndex++;
 
-if(i<questions.length){
-showQ();
-}else{
-showResult();
-}
+    if(currentIndex < questions.length){
+        showQ();
+    }else{
+        showResult();
+    }
 }
 
 function showResult(){
-document.getElementById('quiz').style.display='none';
-document.getElementById('result').style.display='block';
+    document.getElementById('quiz').style.display='none';
+    document.getElementById('result').style.display='block';
 
-const keys=Object.keys(scores);
-let winner=keys[0];
+    const keys=Object.keys(scores);
+    let winner = keys.reduce((a, b) => scores[a] > scores[b] ? a : b);
 
-keys.forEach(k=>{
-if(scores[k]>scores[winner]) winner=k;
-});
+    const r=results[winner];
 
-const r=results[winner];
+    document.getElementById('result-title').innerText=r.t;
+    document.getElementById('result-desc').innerText=r.d;
+    document.getElementById('result-img').src=r.i;
+    document.getElementById('cta-text').innerText=ctaMap[winner];
 
-document.getElementById('result-title').innerText=r.t;
-document.getElementById('result-desc').innerText=r.d;
-document.getElementById('result-img').src=r.i;
-document.getElementById('cta-text').innerText=ctaMap[winner];
-
-setTimeout(()=>{
-document.getElementById('imgWrap').classList.add('active');
-},200);
+    setTimeout(()=>{
+        document.getElementById('imgWrap').classList.add('active');
+    },200);
 }
-
 </script>
 
 </body>
