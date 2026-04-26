@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -8,143 +7,138 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Noto+Sans+KR:wght@300;400;700&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
-<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 
 <style>
 body {
-    font-family: 'Noto Sans KR', sans-serif;
-    background: #ede9e3;
-    background-image: url('https://www.transparenttextures.com/patterns/paper.png');
+    font-family:'Noto Sans KR', sans-serif;
+    background:#ede9e3;
+    background-image:url('https://www.transparenttextures.com/patterns/paper.png');
 }
-.serif { font-family: 'Nanum Myeongjo', serif; }
 
+/* 포스터 카드 */
 .poster {
-    background: #fdfcf8;
-    border: 1px solid #d6d0c4;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-    position: relative;
+    background:#fdfcf8;
+    border:1px solid #d6d0c4;
+    box-shadow:0 20px 40px rgba(0,0,0,0.15);
+    position:relative;
+    padding:32px;
 }
-.poster::after {
+
+/* 이중 테두리 */
+.poster::after{
     content:'';
     position:absolute;
     inset:8px;
     border:1px solid #d6d0c4;
 }
 
-.poster-title {
+/* 타이틀 */
+.title {
+    font-family:'Nanum Myeongjo', serif;
     letter-spacing:0.3em;
     color:#7a0c0c;
 }
 
-.btn-main {
+/* 버튼 */
+.btn {
     background:#7a0c0c;
     color:white;
     transition:0.2s;
 }
-.btn-main:hover {
+.btn:hover {
     background:#5a0808;
     transform:translateY(-2px);
 }
 
-.result-img-wrap img {
-    filter: grayscale(100%) contrast(1.1);
-    transition:0.8s;
+/* 선택지 */
+.answer {
+    border:1px solid #ccc;
+    padding:14px;
+    margin-bottom:8px;
+    transition:0.2s;
 }
-.result-img-wrap.active img {
-    filter: grayscale(0%);
+.answer:hover {
+    border-color:black;
+    background:#f5f5f5;
+}
+
+/* 결과 이미지 */
+.img-wrap img{
+    filter:grayscale(100%);
+    transition:0.6s;
+}
+.img-wrap.active img{
+    filter:grayscale(0%);
     transform:scale(1.03);
 }
 
-.desc-box {
+/* 설명 */
+.desc{
     background:#f3f1ec;
     border-left:4px solid #7a0c0c;
-}
-
-#thumb {
-    position:fixed;
-    left:-9999px;
-    width:1080px;
-    height:1080px;
-    background:#fdfdfb;
-    padding:60px;
-    font-family:'Nanum Myeongjo';
+    padding:12px;
 }
 </style>
 </head>
 
-<body class="flex items-center justify-center min-h-screen p-4">
+<body class="flex justify-center items-center min-h-screen p-4">
 
-<div class="max-w-md w-full">
+<div class="w-full max-w-md">
 
 <!-- 시작 -->
-<div id="start" class="poster p-10 text-center">
+<div id="start" class="poster text-center">
 <p class="text-xs tracking-widest text-gray-500 mb-2">2026 동서대학교 연기과 3학년 1학기 정기 워크숍</p>
-<h1 class="serif text-5xl font-black poster-title mb-6">1 9 4 5</h1>
-<p class="text-gray-600 mb-10">
-해방 직후,<br>당신은 어떤 선택을 하며 살아남았을까요
+
+<h1 class="title text-5xl mb-6">1 9 4 5</h1>
+
+<p class="text-gray-600 mb-10 leading-relaxed">
+해방 직후,<br>
+당신은 어떤 선택을 하며 살아남았을까요
 </p>
-<button onclick="startQuiz()" class="btn-main w-full py-4 serif text-lg">
+
+<button onclick="startQuiz()" class="btn w-full py-4 text-lg">
 테스트 시작
 </button>
 </div>
 
 <!-- 질문 -->
-<div id="quiz" class="poster p-8 hidden">
-<h2 id="question" class="serif text-2xl mb-8"></h2>
+<div id="quiz" class="poster" style="display:none;">
+<h2 id="question" class="mb-8 text-xl font-bold"></h2>
 <div id="answers"></div>
 </div>
 
 <!-- 결과 -->
-<div id="result" class="poster p-8 text-center hidden">
+<div id="result" class="poster text-center" style="display:none;">
 
-<p class="text-xs text-gray-500 mb-2">당신과 닮은 인물</p>
-<h1 id="result-title" class="serif text-3xl text-[#7a0c0c] mb-6"></h1>
+<p class="text-sm text-gray-500 mb-2">당신과 닮은 인물</p>
 
-<div class="result-img-wrap mb-6" id="imgWrap">
+<h1 id="result-title" class="title text-3xl mb-6"></h1>
+
+<div class="img-wrap mb-6" id="imgWrap">
 <img id="result-img" class="w-full">
 </div>
 
-<p id="result-desc" class="desc-box text-left p-4 mb-6 text-sm"></p>
+<p id="result-desc" class="desc mb-6 text-left"></p>
 
-<div id="result-stats" class="text-left mb-6"></div>
+<p id="cta-text" class="text-sm text-gray-600 mb-4"></p>
 
-<p id="cta-text" class="text-sm text-gray-500 mb-3"></p>
-
-<a href="https://forms.gle/hQindGxBDH64uSWC8?utm_source=1945_test"
-class="btn-main block w-full py-3 mb-3">
+<a href="https://forms.gle/hQindGxBDH64uSWC8"
+class="btn block py-3 mb-2">
 🎟 공연 보러 가기
 </a>
 
-<button onclick="downloadShare()" class="w-full border py-2 mb-2">
-결과 이미지 저장
-</button>
-
-<button onclick="generateThumbnail()" class="btn-main w-full py-2">
-인스타 썸네일 생성
+<button onclick="location.reload()" class="w-full border py-2">
+다시하기
 </button>
 
 </div>
 
-</div>
-
-<!-- 공유 카드 -->
-<div id="share-card" class="hidden bg-white p-4 text-center">
-<h2 id="share-title"></h2>
-<img id="share-img" class="w-full">
-<p id="share-desc"></p>
-</div>
-
-<!-- 썸네일 -->
-<div id="thumb">
-<h1 id="thumb-title" style="font-size:64px;"></h1>
-<img id="thumb-img" style="width:100%; margin:40px 0;">
-<p id="thumb-desc" style="font-size:28px;"></p>
-<p style="margin-top:20px;">당신은 어떤 선택을 할 것인가</p>
 </div>
 
 <script>
 
-// 질문
+// ===== 기존 안정 로직 그대로 유지 =====
+
 const questions = [
 {q:"낯선 곳에 떨어졌다",a:[{t:"생존",p:"만철"},{t:"질서",p:"최주임"},{t:"가족",p:"순남"},{t:"관망",p:"미즈코"}]},
 {q:"문제 발생",a:[{t:"제압",p:"보안대원"},{t:"대화",p:"원창"},{t:"계산",p:"선녀"},{t:"도움",p:"훈이"}]},
@@ -156,7 +150,6 @@ const questions = [
 {q:"선택",a:[{t:"희생",p:"원창"},{t:"자기",p:"선녀"},{t:"의리",p:"훈이"},{t:"고민",p:"영호"}]}
 ];
 
-// 결과 (이미지 그대로 유지)
 const results = {
 "원창":{t:"원창형 인간",d:"공동체를 이끄는 리더",i:"http://bit.ly/4cAsD2w"},
 "순남":{t:"순남형 인간",d:"가족을 지키는 사람",i:"https://bit.ly/4mSnRAD"},
@@ -176,48 +169,46 @@ const results = {
 "유코":{t:"유코형 인간",d:"상처",i:"https://zrr.kr/J8OoHI"}
 };
 
-// CTA (16명 전부)
-function getCTA(name){
-const map={
-"원창":"당신처럼 사람들을 이끄는 선택, 그 결말을 확인하세요",
-"만철":"살아남는 선택의 끝이 궁금하다면 직접 확인하세요",
-"명숙":"지키는 선택이 어떤 결과를 낳는지 확인해보세요",
-"순남":"가족을 위한 선택, 그 결말을 보세요",
-"미즈코":"불안 속에서 살아남는 이야기를 확인하세요",
-"끝순":"버텨낸 삶의 끝은 어떤 모습일까요",
-"선녀":"현실적인 선택의 대가를 확인해보세요",
-"장씨":"강한 선택이 만들어낸 결과를 확인하세요",
-"이노인":"끝까지 버틴 사람이 맞이하는 결말을 보세요",
-"숙이":"희망을 품은 선택은 어떤 미래를 만들까요",
+const ctaMap = {
+"원창":"사람들을 이끄는 선택의 결말을 확인하세요",
+"만철":"살아남는 선택의 끝을 확인하세요",
+"명숙":"지키는 선택이 만든 결과를 보세요",
+"순남":"가족을 위한 선택의 결말을 확인하세요",
+"미즈코":"불안 속 생존의 이야기를 확인하세요",
+"끝순":"버텨낸 삶의 끝을 확인하세요",
+"선녀":"현실적 선택의 대가를 확인하세요",
+"장씨":"강한 선택이 만든 결과를 보세요",
+"이노인":"끝까지 버틴 삶의 결말을 확인하세요",
+"숙이":"희망이 만든 미래를 확인하세요",
 "옥이":"순수한 존재의 이야기를 확인하세요",
 "훈이":"의리를 지킨 선택의 결과를 보세요",
-"영호":"끝까지 고민한 선택의 결말을 확인하세요",
+"영호":"고민 끝 선택의 결말을 확인하세요",
 "최주임":"질서를 유지한 선택의 결과를 보세요",
 "보안대원":"규율을 지킨 선택의 결과를 확인하세요",
-"유코":"버려진 이들의 이야기를 직접 확인해보세요"
+"유코":"버려진 이들의 이야기를 확인하세요"
 };
-return map[name];
-}
 
 let i=0;
 let scores={};
 
 function startQuiz(){
-document.getElementById('start').classList.add('hidden');
-document.getElementById('quiz').classList.remove('hidden');
+document.getElementById('start').style.display='none';
+document.getElementById('quiz').style.display='block';
 showQ();
 }
 
 function showQ(){
 const q=questions[i];
 document.getElementById('question').innerText=q.q;
+
 const box=document.getElementById('answers');
 box.innerHTML="";
+
 q.a.forEach(a=>{
 const b=document.createElement('button');
-b.className="w-full p-4 border mb-2 text-left hover:bg-gray-50";
 b.innerText=a.t;
-b.onclick=()=>next(a.p);
+b.className="answer";
+b.onclick=function(){ next(a.p); };
 box.appendChild(b);
 });
 }
@@ -225,65 +216,38 @@ box.appendChild(b);
 function next(p){
 scores[p]=(scores[p]||0)+1;
 i++;
-i<questions.length?showQ():showResult();
+
+if(i<questions.length){
+showQ();
+}else{
+showResult();
+}
 }
 
 function showResult(){
-document.getElementById('quiz').classList.add('hidden');
-document.getElementById('result').classList.remove('hidden');
+document.getElementById('quiz').style.display='none';
+document.getElementById('result').style.display='block';
 
-const max=Math.max(...Object.values(scores));
-const c=Object.keys(scores).filter(k=>scores[k]===max);
-const winner=c[Math.floor(Math.random()*c.length)];
+const keys=Object.keys(scores);
+let winner=keys[0];
+
+keys.forEach(k=>{
+if(scores[k]>scores[winner]) winner=k;
+});
 
 const r=results[winner];
 
 document.getElementById('result-title').innerText=r.t;
 document.getElementById('result-desc').innerText=r.d;
 document.getElementById('result-img').src=r.i;
+document.getElementById('cta-text').innerText=ctaMap[winner];
 
-setTimeout(()=>document.getElementById('imgWrap').classList.add('active'),200);
-
-document.getElementById('cta-text').innerText=getCTA(winner);
-}
-
-function downloadShare(){
-const card=document.getElementById('share-card');
-document.getElementById('share-title').innerText=document.getElementById('result-title').innerText;
-document.getElementById('share-desc').innerText=document.getElementById('result-desc').innerText;
-document.getElementById('share-img').src=document.getElementById('result-img').src;
-
-card.classList.remove('hidden');
-
-html2canvas(card).then(canvas=>{
-const link=document.createElement('a');
-link.download='result.png';
-link.href=canvas.toDataURL();
-link.click();
-card.classList.add('hidden');
-});
-}
-
-function generateThumbnail(){
-const thumb=document.getElementById('thumb');
-
-document.getElementById('thumb-title').innerText=document.getElementById('result-title').innerText;
-document.getElementById('thumb-desc').innerText=document.getElementById('result-desc').innerText;
-document.getElementById('thumb-img').src=document.getElementById('result-img').src;
-
-thumb.style.display='block';
-
-html2canvas(thumb,{scale:2}).then(canvas=>{
-const link=document.createElement('a');
-link.download='thumbnail.png';
-link.href=canvas.toDataURL();
-link.click();
-thumb.style.display='none';
-});
+setTimeout(()=>{
+document.getElementById('imgWrap').classList.add('active');
+},200);
 }
 
 </script>
 
 </body>
 </html>
-```
