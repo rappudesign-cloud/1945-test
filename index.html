@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -10,67 +11,115 @@
 <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 
 <style>
-body { font-family:'Noto Sans KR'; background:#f5f5f0; }
-.serif { font-family:'Nanum Myeongjo'; }
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: #ede9e3;
+    background-image: url('https://www.transparenttextures.com/patterns/paper.png');
+}
+.serif { font-family: 'Nanum Myeongjo', serif; }
 
-.result-img-wrap img { filter:grayscale(100%); transition:0.8s; }
-.result-img-wrap.active img { filter:grayscale(0%); transform:scale(1.03); }
+.poster {
+    background: #fdfcf8;
+    border: 1px solid #d6d0c4;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    position: relative;
+}
+.poster::after {
+    content:'';
+    position:absolute;
+    inset:8px;
+    border:1px solid #d6d0c4;
+}
+
+.poster-title {
+    letter-spacing:0.3em;
+    color:#7a0c0c;
+}
+
+.btn-main {
+    background:#7a0c0c;
+    color:white;
+    transition:0.2s;
+}
+.btn-main:hover {
+    background:#5a0808;
+    transform:translateY(-2px);
+}
+
+.result-img-wrap img {
+    filter: grayscale(100%) contrast(1.1);
+    transition:0.8s;
+}
+.result-img-wrap.active img {
+    filter: grayscale(0%);
+    transform:scale(1.03);
+}
+
+.desc-box {
+    background:#f3f1ec;
+    border-left:4px solid #7a0c0c;
+}
 
 #thumb {
-position:fixed; left:-9999px;
-width:1080px; height:1080px;
-background:#fdfdfb; padding:60px;
-font-family:'Nanum Myeongjo';
+    position:fixed;
+    left:-9999px;
+    width:1080px;
+    height:1080px;
+    background:#fdfdfb;
+    padding:60px;
+    font-family:'Nanum Myeongjo';
 }
 </style>
 </head>
 
 <body class="flex items-center justify-center min-h-screen p-4">
 
-<div class="max-w-md w-full bg-white p-6 shadow-xl text-center">
+<div class="max-w-md w-full">
 
 <!-- 시작 -->
-<div id="start">
-<h1 class="serif text-4xl mb-4">1945</h1>
-<button onclick="startQuiz()" class="bg-red-900 text-white w-full py-3">
+<div id="start" class="poster p-10 text-center">
+<p class="text-xs tracking-widest text-gray-500 mb-2">2026 동서대학교 연기과 3학년 1학기 정기 워크숍</p>
+<h1 class="serif text-5xl font-black poster-title mb-6">1 9 4 5</h1>
+<p class="text-gray-600 mb-10">
+해방 직후,<br>당신은 어떤 선택을 하며 살아남았을까요
+</p>
+<button onclick="startQuiz()" class="btn-main w-full py-4 serif text-lg">
 테스트 시작
 </button>
 </div>
 
 <!-- 질문 -->
-<div id="quiz" class="hidden">
-<h2 id="question" class="mb-6"></h2>
+<div id="quiz" class="poster p-8 hidden">
+<h2 id="question" class="serif text-2xl mb-8"></h2>
 <div id="answers"></div>
 </div>
 
 <!-- 결과 -->
-<div id="result" class="hidden">
+<div id="result" class="poster p-8 text-center hidden">
 
-<h1 id="result-title" class="serif text-2xl mb-4"></h1>
+<p class="text-xs text-gray-500 mb-2">당신과 닮은 인물</p>
+<h1 id="result-title" class="serif text-3xl text-[#7a0c0c] mb-6"></h1>
 
-<div class="result-img-wrap mb-4" id="imgWrap">
+<div class="result-img-wrap mb-6" id="imgWrap">
 <img id="result-img" class="w-full">
 </div>
 
-<p id="result-desc" class="mb-4 text-sm"></p>
+<p id="result-desc" class="desc-box text-left p-4 mb-6 text-sm"></p>
 
-<div id="result-stats" class="text-left mb-4"></div>
+<div id="result-stats" class="text-left mb-6"></div>
 
-<!-- CTA -->
-<div class="border-t pt-4 mt-4">
-<p class="cta-text text-sm text-stone-500 mb-3"></p>
+<p id="cta-text" class="text-sm text-gray-500 mb-3"></p>
 
-<a href="https://forms.gle/hQindGxBDH64uSWC8?utm_source=1945_test" target="_blank"
-class="block w-full py-3 bg-red-900 text-white font-bold mb-2">
-🎟 공연 예매하러 가기
+<a href="https://forms.gle/hQindGxBDH64uSWC8?utm_source=1945_test"
+class="btn-main block w-full py-3 mb-3">
+🎟 공연 보러 가기
 </a>
-</div>
 
-<button onclick="downloadShare()" class="bg-black text-white w-full py-2 mt-2">
+<button onclick="downloadShare()" class="w-full border py-2 mb-2">
 결과 이미지 저장
 </button>
 
-<button onclick="generateThumbnail()" class="bg-red-900 text-white w-full py-2 mt-2">
+<button onclick="generateThumbnail()" class="btn-main w-full py-2">
 인스타 썸네일 생성
 </button>
 
@@ -78,7 +127,7 @@ class="block w-full py-3 bg-red-900 text-white font-bold mb-2">
 
 </div>
 
-<!-- 공유 -->
+<!-- 공유 카드 -->
 <div id="share-card" class="hidden bg-white p-4 text-center">
 <h2 id="share-title"></h2>
 <img id="share-img" class="w-full">
@@ -97,7 +146,7 @@ class="block w-full py-3 bg-red-900 text-white font-bold mb-2">
 
 // 질문
 const questions = [
-{q:"낯선 곳",a:[{t:"생존",p:"만철"},{t:"질서",p:"최주임"},{t:"가족",p:"순남"},{t:"관망",p:"미즈코"}]},
+{q:"낯선 곳에 떨어졌다",a:[{t:"생존",p:"만철"},{t:"질서",p:"최주임"},{t:"가족",p:"순남"},{t:"관망",p:"미즈코"}]},
 {q:"문제 발생",a:[{t:"제압",p:"보안대원"},{t:"대화",p:"원창"},{t:"계산",p:"선녀"},{t:"도움",p:"훈이"}]},
 {q:"가치",a:[{t:"생존",p:"끝순"},{t:"신념",p:"영호"},{t:"가족",p:"이노인"},{t:"보호",p:"명숙"}]},
 {q:"의심",a:[{t:"논리",p:"원창"},{t:"위협",p:"장씨"},{t:"침묵",p:"미즈코"},{t:"이용",p:"선녀"}]},
@@ -107,44 +156,69 @@ const questions = [
 {q:"선택",a:[{t:"희생",p:"원창"},{t:"자기",p:"선녀"},{t:"의리",p:"훈이"},{t:"고민",p:"영호"}]}
 ];
 
-// 결과 (초기 이미지 링크 그대로)
+// 결과 (이미지 그대로 유지)
 const results = {
 "원창":{t:"원창형 인간",d:"공동체를 이끄는 리더",i:"http://bit.ly/4cAsD2w"},
 "순남":{t:"순남형 인간",d:"가족을 지키는 사람",i:"https://bit.ly/4mSnRAD"},
-"명숙":{t:"명숙형 인간",d:"누군가를 지키는 사람",i:"https://bit.ly/4tJEmlh"},
-"미즈코":{t:"미즈코형 인간",d:"경계에 선 사람",i:"https://bit.ly/4ebjfU1"},
+"명숙":{t:"명숙형 인간",d:"지키는 선택",i:"https://bit.ly/4tJEmlh"},
+"미즈코":{t:"미즈코형 인간",d:"경계에 선 존재",i:"https://bit.ly/4ebjfU1"},
 "만철":{t:"만철형 인간",d:"생존 전략가",i:"https://bit.ly/4eJ3sfh"},
-"끝순":{t:"끝순형 인간",d:"버티는 사람",i:"https://zrr.kr/kACTvt"},
-"선녀":{t:"선녀형 인간",d:"현실적인 선택",i:"https://zrr.kr/IuV4ns"},
+"끝순":{t:"끝순형 인간",d:"버티는 힘",i:"https://zrr.kr/kACTvt"},
+"선녀":{t:"선녀형 인간",d:"현실적 선택",i:"https://zrr.kr/IuV4ns"},
 "장씨":{t:"장씨형 인간",d:"강압적 질서",i:"https://zrr.kr/v67C5W"},
 "이노인":{t:"이노인형 인간",d:"버팀목",i:"https://zrr.kr/GzTyOG"},
 "숙이":{t:"숙이형 인간",d:"희망",i:"https://zrr.kr/DICZ7E"},
 "옥이":{t:"옥이형 인간",d:"순수",i:"https://zrr.kr/HVl6HJ"},
 "훈이":{t:"훈이형 인간",d:"의리",i:"https://zrr.kr/QNJdTt"},
 "영호":{t:"영호형 인간",d:"고뇌",i:"https://zrr.kr/kT1d1l"},
-"최주임":{t:"최주임형 인간",d:"관리자",i:"https://zrr.kr/dqWJwu"},
+"최주임":{t:"최주임형 인간",d:"관리",i:"https://zrr.kr/dqWJwu"},
 "보안대원":{t:"질서형 인간",d:"규율 유지",i:"https://zrr.kr/dqWJwu"},
 "유코":{t:"유코형 인간",d:"상처",i:"https://zrr.kr/J8OoHI"}
 };
 
-let i=0, scores={};
+// CTA (16명 전부)
+function getCTA(name){
+const map={
+"원창":"당신처럼 사람들을 이끄는 선택, 그 결말을 확인하세요",
+"만철":"살아남는 선택의 끝이 궁금하다면 직접 확인하세요",
+"명숙":"지키는 선택이 어떤 결과를 낳는지 확인해보세요",
+"순남":"가족을 위한 선택, 그 결말을 보세요",
+"미즈코":"불안 속에서 살아남는 이야기를 확인하세요",
+"끝순":"버텨낸 삶의 끝은 어떤 모습일까요",
+"선녀":"현실적인 선택의 대가를 확인해보세요",
+"장씨":"강한 선택이 만들어낸 결과를 확인하세요",
+"이노인":"끝까지 버틴 사람이 맞이하는 결말을 보세요",
+"숙이":"희망을 품은 선택은 어떤 미래를 만들까요",
+"옥이":"순수한 존재의 이야기를 확인하세요",
+"훈이":"의리를 지킨 선택의 결과를 보세요",
+"영호":"끝까지 고민한 선택의 결말을 확인하세요",
+"최주임":"질서를 유지한 선택의 결과를 보세요",
+"보안대원":"규율을 지킨 선택의 결과를 확인하세요",
+"유코":"버려진 이들의 이야기를 직접 확인해보세요"
+};
+return map[name];
+}
+
+let i=0;
+let scores={};
 
 function startQuiz(){
-start.style.display='none';
-quiz.style.display='block';
+document.getElementById('start').classList.add('hidden');
+document.getElementById('quiz').classList.remove('hidden');
 showQ();
 }
 
 function showQ(){
 const q=questions[i];
-question.innerText=q.q;
-answers.innerHTML="";
+document.getElementById('question').innerText=q.q;
+const box=document.getElementById('answers');
+box.innerHTML="";
 q.a.forEach(a=>{
 const b=document.createElement('button');
-b.className="block w-full border p-3 mb-2";
+b.className="w-full p-4 border mb-2 text-left hover:bg-gray-50";
 b.innerText=a.t;
 b.onclick=()=>next(a.p);
-answers.appendChild(b);
+box.appendChild(b);
 });
 }
 
@@ -155,8 +229,8 @@ i<questions.length?showQ():showResult();
 }
 
 function showResult(){
-quiz.style.display='none';
-result.style.display='block';
+document.getElementById('quiz').classList.add('hidden');
+document.getElementById('result').classList.remove('hidden');
 
 const max=Math.max(...Object.values(scores));
 const c=Object.keys(scores).filter(k=>scores[k]===max);
@@ -164,72 +238,48 @@ const winner=c[Math.floor(Math.random()*c.length)];
 
 const r=results[winner];
 
-result-title.innerText=r.t;
-result-desc.innerText=r.d;
-result-img.src=r.i;
+document.getElementById('result-title').innerText=r.t;
+document.getElementById('result-desc').innerText=r.d;
+document.getElementById('result-img').src=r.i;
 
-setTimeout(()=>imgWrap.classList.add('active'),200);
+setTimeout(()=>document.getElementById('imgWrap').classList.add('active'),200);
 
-ctaText.innerText=getCTA(winner);
-renderStats();
+document.getElementById('cta-text').innerText=getCTA(winner);
 }
 
-function renderStats(){
-const total=Object.values(scores).reduce((a,b)=>a+b,0);
-result-stats.innerHTML="";
-Object.entries(scores).sort((a,b)=>b[1]-a[1]).slice(0,3)
-.forEach(([n,s])=>{
-const p=Math.round(s/total*100);
-result-stats.innerHTML+=`<div>${n} ${p}%</div>`;
-});
-}
-
-function getCTA(name){
-const map={
-"원창":"당신처럼 이끄는 선택의 결말을 확인하세요",
-"만철":"살아남는 선택의 끝을 보세요",
-"명숙":"지키는 선택의 결과는?",
-"선녀":"현실적 선택의 대가를 확인하세요",
-"영호":"끝까지 고민한 선택의 결말은?"
-};
-return map[name]||"이 인물의 결말을 직접 확인해보세요";
-}
-
-// 공유 & 썸네일
 function downloadShare(){
-shareFill(false);
-share-card.style.display='block';
-html2canvas(share-card).then(c=>{
-const a=document.createElement('a');
-a.href=c.toDataURL(); a.download='result.png'; a.click();
-share-card.style.display='none';
+const card=document.getElementById('share-card');
+document.getElementById('share-title').innerText=document.getElementById('result-title').innerText;
+document.getElementById('share-desc').innerText=document.getElementById('result-desc').innerText;
+document.getElementById('share-img').src=document.getElementById('result-img').src;
+
+card.classList.remove('hidden');
+
+html2canvas(card).then(canvas=>{
+const link=document.createElement('a');
+link.download='result.png';
+link.href=canvas.toDataURL();
+link.click();
+card.classList.add('hidden');
 });
 }
 
 function generateThumbnail(){
-shareFill(true);
+const thumb=document.getElementById('thumb');
+
+document.getElementById('thumb-title').innerText=document.getElementById('result-title').innerText;
+document.getElementById('thumb-desc').innerText=document.getElementById('result-desc').innerText;
+document.getElementById('thumb-img').src=document.getElementById('result-img').src;
+
 thumb.style.display='block';
-html2canvas(thumb,{scale:2}).then(c=>{
-const a=document.createElement('a');
-a.href=c.toDataURL(); a.download='thumb.png'; a.click();
+
+html2canvas(thumb,{scale:2}).then(canvas=>{
+const link=document.createElement('a');
+link.download='thumbnail.png';
+link.href=canvas.toDataURL();
+link.click();
 thumb.style.display='none';
 });
-}
-
-function shareFill(isThumb){
-const t=result-title.innerText;
-const d=result-desc.innerText;
-const i=result-img.src;
-
-if(isThumb){
-thumb-title.innerText=t;
-thumb-desc.innerText=d;
-thumb-img.src=i;
-}else{
-share-title.innerText=t;
-share-desc.innerText=d;
-share-img.src=i;
-}
 }
 
 </script>
