@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>희곡 1945 인물 테스트</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Noto+Sans+KR:wght@300;400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Noto Sans KR', sans-serif; background-color: #f5f5f0; color: #2c2c2c; }
+        .serif { font-family: 'Nanum Myeongjo', serif; }
+        .vintage-border { border: 1px solid #d1d1c1; position: relative; }
+        .vintage-border::after { content: ''; position: absolute; top: 4px; left: 4px; right: 4px; bottom: 4px; border: 1px solid #d1d1c1; pointer-events: none; }
+        .bg-grain { background-image: url('https://www.transparenttextures.com/patterns/paper.png'); }
+        .btn-hover:hover { transform: translateY(-2px); transition: all 0.2s; }
+    </style>
+</head>
+<body class="bg-grain min-h-screen flex items-center justify-center p-4">
+
+    <div id="app" class="max-w-md w-full bg-[#fdfdfb] p-8 shadow-2xl vintage-border text-center">
+        <div id="start-screen">
+            <h2 class="text-stone-500 text-sm tracking-widest mb-2">2026 정기공연</h2>
+            <h1 class="serif text-5xl font-extrabold text-red-900 mb-6">1 9 4 5</h1>
+            <p class="text-stone-600 mb-8 leading-relaxed">
+                해방 직후 만주 전매국 구제소,<br>
+                당신은 어떤 선택을 하며 살아남았을까요?
+            </p>
+            <button onclick="startQuiz()" class="btn-hover w-full py-4 bg-red-900 text-white serif text-xl font-bold rounded-sm shadow-lg">
+                테스트 시작하기
+            </button>
+        </div>
+
+        <div id="quiz-screen" class="hidden">
+            <div class="w-full bg-stone-200 h-1 mb-10">
+                <div id="progress" class="bg-red-900 h-1 transition-all duration-300" style="width: 20%"></div>
+            </div>
+            <h2 id="question" class="serif text-2xl font-bold mb-10 leading-snug text-stone-800">질문 내용</h2>
+            <div id="answers" class="space-y-4">
+                </div>
+        </div>
+
+        <div id="result-screen" class="hidden">
+            <h3 class="text-stone-500 text-sm mb-2">당신과 닮은 인물은</h3>
+            <h1 id="result-title" class="serif text-4xl font-black text-red-900 mb-6">인물 이름</h1>
+            <div class="bg-stone-200 w-full aspect-square mb-6 overflow-hidden rounded-sm grayscale hover:grayscale-0 transition-all duration-700">
+                <img id="result-img" src="" alt="캐릭터 사진" class="w-full h-full object-cover">
+            </div>
+            <p id="result-desc" class="text-stone-700 leading-relaxed mb-8 text-left p-4 bg-stone-50 border-l-4 border-red-900">
+                인물 상세 설명
+            </p>
+            
+            <div class="border-t border-stone-200 pt-6">
+                <p class="text-sm text-stone-500 mb-4">나와 이 인물이 비슷한 이유가 궁금하다면?</p>
+                <a href="https://your-ticket-link.com" target="_blank" class="inline-block w-full py-3 bg-stone-800 text-white font-bold rounded-sm hover:bg-black transition">
+                    공연 예매하러 가기 (인터파크)
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                q: "갑자기 낯선 곳에 홀로 남겨졌을 때, 나의 행동은?",
+                a: [
+                    { t: "주변을 파악하고 생존에 필요한 물건부터 챙긴다.", p: "만철" },
+                    { t: "사람들을 모아 대책을 논의하고 역할을 나눈다.", p: "원창" },
+                    { t: "일단 숨어서 상황이 어떻게 돌아가는지 지켜본다.", p: "미즈코" },
+                    { t: "이곳의 규칙을 빨리 파악해 나에게 유리한 상황을 만든다.", p: "선녀" }
+                ]
+            },
+            {
+                q: "소중한 사람이 큰 잘못을 저질러 위기에 처했다면?",
+                a: [
+                    { t: "비난하지 않고 어떻게든 수습해 사람을 먼저 살린다.", p: "명숙" },
+                    { t: "공동체를 위해 냉정하지만 엄격하게 책임을 묻는다.", p: "장씨" },
+                    { t: "무섭지만 묵묵히 그 사람의 곁을 지킨다.", p: "순남" },
+                    { t: "나에게 피해가 오기 전에 거리를 두고 상황을 본다.", p: "끝순" }
+                ]
+            },
+            {
+                q: "내가 인생에서 가장 중요하게 생각하는 가치는?",
+                a: [
+                    { t: "어떤 풍파 속에서도 꺾이지 않는 강한 생존력", p: "만철" },
+                    { t: "정의로운 사회를 위한 지식과 교육의 힘", p: "원창" },
+                    { t: "사랑하는 가족과 함께하는 평범한 하루", p: "순남" },
+                    { t: "현실적인 이득과 내 사람을 챙기는 실속", p: "선녀" }
+                ]
+            },
+            {
+                q: "누군가 나에 대한 억울한 소문을 퍼뜨린다면?",
+                a: [
+                    { t: "당당하게 나서서 논리적으로 소문이 틀렸음을 알린다.", p: "원창" },
+                    { t: "비밀이 새어나가지 않도록 철저히 침묵하고 숨는다.", p: "명숙" },
+                    { t: "강하게 맞서서 나를 건드리지 못하게 만든다.", p: "장씨" },
+                    { t: "내 사람들에게만 진실을 말하고 견뎌낸다.", p: "훈이" }
+                ]
+            },
+            {
+                q: "드디어 고향으로 가는 기차가 도착했을 때 나의 기분은?",
+                a: [
+                    { t: "가장 먼저 타기 위해 짐부터 빠르게 챙긴다.", p: "만철" },
+                    { t: "가족들과 친구들을 빠짐없이 챙겼는지 확인한다.", p: "원창" },
+                    { t: "과거를 뒤로하고 새로운 삶을 시작할 생각에 설렌다.", p: "명숙" },
+                    { t: "기쁘지만 또 다른 시련이 올까 봐 걱정부터 앞선다.", p: "끝순" }
+                ]
+            }
+        ];
+
+        const results = {
+            "원창": { t: "이상적인 지식인, 원창", d: "한글 강습회를 열었던 원창처럼 당신은 공동체의 미래를 고민하는 리더입니다. 어려운 상황에서도 배움을 멈추지 않는 고결함이 닮았네요.", i: "https://via.placeholder.com/400?text=WONCHANG" },
+            "명숙": { t: "비밀을 품은 수호자, 명숙", d: "피 한 방울 섞이지 않은 남일지라도 내 사람이라 생각하면 끝까지 책임집니다. 겉으론 차가워 보이지만 속은 누구보다 뜨겁습니다.", i: "https://via.placeholder.com/400?text=MYEONGSOOK" },
+            "순남": { t: "사랑을 믿는 순수한 마음, 순남", d: "혼란스러운 세상 속에서도 가족과 사랑의 가치를 믿습니다. 당신의 밝은 에너지는 절망적인 수용소에서도 희망이 됩니다.", i: "https://via.placeholder.com/400?text=SOONNAM" },
+            "선녀": { t: "현실적인 생존 전략가, 선녀", d: "세상 물정에 밝고 기회를 포착하는 능력이 뛰어납니다. 다소 거칠어 보일 수 있지만, 그건 이 험한 세상에서 살아남기 위한 당신만의 방식이죠.", i: "https://via.placeholder.com/400?text=SUNNYEO" },
+            "만철": { t: "지독한 생존 본능, 만철", d: "누구보다 빠르고 정확하게 상황을 판단합니다. 당신에게 생존은 곧 승리이며, 실속을 챙길 줄 아는 스마트한 생존자입니다.", i: "https://via.placeholder.com/400?text=MANCHEOL" }
+        };
+
+        let currentQ = 0;
+        let scores = {};
+
+        function startQuiz() {
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('hidden');
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const q = questions[currentQ];
+            document.getElementById('question').innerText = q.q;
+            document.getElementById('progress').style.width = ((currentQ + 1) / questions.length * 100) + "%";
+            
+            const ansDiv = document.getElementById('answers');
+            ansDiv.innerHTML = "";
+            q.a.forEach(answer => {
+                const btn = document.createElement('button');
+                btn.className = "w-full p-4 text-left border border-stone-300 rounded-sm hover:bg-stone-100 hover:border-stone-800 transition btn-hover text-sm";
+                btn.innerText = answer.t;
+                btn.onclick = () => nextQuestion(answer.p);
+                ansDiv.appendChild(btn);
+            });
+        }
+
+        function nextQuestion(person) {
+            scores[person] = (scores[person] || 0) + 1;
+            currentQ++;
+            if (currentQ < questions.length) {
+                showQuestion();
+            } else {
+                showResult();
+            }
+        }
+
+        function showResult() {
+            document.getElementById('quiz-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+            
+            const winner = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
+            const result = results[winner] || results["원창"];
+            
+            document.getElementById('result-title').innerText = result.t;
+            document.getElementById('result-desc').innerText = result.d;
+            document.getElementById('result-img').src = result.i;
+        }
+    </script>
+</body>
+</html>
