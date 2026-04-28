@@ -14,9 +14,9 @@
         .poster-card::after { content: ''; position: absolute; inset: 8px; border: 1px solid #d6d0c4; pointer-events: none; }
         .title-vintage { font-family: 'Nanum Myeongjo', serif; letter-spacing: 0.1em; color: #2c2a26; font-weight: 800; }
         .poster-quote { writing-mode: vertical-rl; text-orientation: mixed; letter-spacing: 0.15em; line-height: 1.8; color: #656057; font-size: 0.8rem; }
-        .btn-vintage { background-color: #b5ada1; color: white; transition: 0.2s; cursor: pointer; position: relative; z-index: 10; }
+        .btn-vintage { background-color: #b5ada1; color: white; transition: 0.2s; cursor: pointer; position: relative; z-index: 10; border-radius: 2px; }
         .btn-vintage:hover { background-color: #9f9689; transform: translateY(-2px); }
-        .answer-vintage { width: 100%; border: 1px solid #ccc; padding: 16px; margin-bottom: 12px; transition: 0.2s; text-align: left; background-color: white; cursor: pointer; position: relative; z-index: 10; font-size: 0.95rem; line-height: 1.6; }
+        .answer-vintage { width: 100%; border: 1px solid #ccc; padding: 16px; margin-bottom: 12px; transition: 0.2s; text-align: left; background-color: white; cursor: pointer; position: relative; z-index: 10; font-size: 0.95rem; line-height: 1.6; border-radius: 2px; }
         .answer-vintage:hover { border-color: #b5ada1; background-color: #fdf5f5; }
         .progress-container { width: 100%; height: 3px; background-color: #e5e7eb; margin-bottom: 25px; position: relative; z-index: 10; }
         .progress-bar { height: 100%; background-color: #b5ada1; width: 0%; transition: width 0.3s ease; }
@@ -31,8 +31,8 @@
         <div class="flex flex-col items-center mb-10"><p class="poster-quote serif">우리는 왜 그렇게 서둘렀을까<br>아무것도 확실하지 않은 곳을 향해</p></div>
         <p class="text-gray-700 mb-2 serif tracking-wide">나와 닮은 &lt;1945&gt; 캐릭터는?</p>
         <h1 class="title-vintage text-6xl mb-12">1 9 4 5</h1>
-        <p class="text-sm tracking-widest text-gray-500 mb-10 serif">2026 동서대학교 임권택영화예술대학</n> 연기과 3학년 1학기 정기 워크숍</p>
-        <button onclick="startQuiz()" class="btn-vintage w-full py-4 text-lg font-bold rounded-sm shadow">테스트 시작하기</button>
+        <p class="text-sm tracking-widest text-gray-500 mb-10 serif text-center">2026 동서대학교 연기과 정기 워크숍<br>[기막힌 1945]</p>
+        <button onclick="startQuiz()" class="btn-vintage w-full py-4 text-lg font-bold shadow">테스트 시작하기</button>
     </div>
 
     <div id="quiz" class="poster-card">
@@ -47,108 +47,55 @@
         <h1 id="result-title" class="title-vintage text-3xl mb-8"></h1>
         <div class="img-wrap mb-6 overflow-hidden rounded shadow-md" id="imgWrap"><img id="result-img" class="w-full aspect-square"></div>
         <p id="result-desc" class="desc mb-8 text-left text-sm"></p>
-        <p id="cta-text" class="text-xs text-gray-600 mb-4 font-bold serif"></p>
-        <a id="res-btn" href="https://forms.gle/hQindGxBDH64uSWC8" target="_blank" class="btn-vintage block py-3 mb-2 text-center no-underline font-bold rounded-sm">🎟 무대 위 이 인물의 운명 확인하기</a>
-        <button onclick="location.reload()" class="w-full border py-2 text-sm text-gray-400 hover:bg-gray-100 rounded-sm">다시하기</button>
+
+        <div class="bg-stone-100 border-y border-stone-200 py-5 px-3 mb-8 text-center rounded-sm">
+            <p class="text-xs font-bold text-stone-700 mb-2 serif">🎁 결과 공유 이벤트</p>
+            <p class="text-[11px] leading-relaxed text-stone-600">
+                결과 화면 캡처 후 <span class="text-red-800 font-bold underline">5월 25일까지</span><br>
+                인스타 스토리 업로드 + <span class="font-bold text-stone-900">@nora_class_</span> 태그 시<br>
+                추첨을 통해 <span class="font-bold text-stone-900">뚜레쥬르 쿠폰</span>을 드립니다!
+            </p>
+            <p class="text-[9px] text-stone-400 mt-2">* 예매 & 테스트 링크 함께 첨부 시 당첨 확률 UP!</p>
+        </div>
+
+        <p id="cta-text" class="text-[11px] text-gray-600 mb-4 font-bold serif italic"></p>
+        <a id="res-btn" href="https://forms.gle/hQindGxBDH64uSWC8" target="_blank" class="btn-vintage block py-3 mb-2 text-center no-underline font-bold text-sm">🎟 공연 예매하러 가기</a>
+        <button onclick="location.reload()" class="w-full border py-2 text-xs text-gray-400 hover:bg-gray-100 rounded-sm mt-4">다시하기</button>
     </div>
 </div>
 
 <script>
     const questions = [
-        {
-            q: "낯선 땅 만주, 황량한 구제소에 발을 내디뎠다. 가장 먼저 무엇을 하겠는가?",
-            a: [
-                {t: "이곳의 규칙과 주변 지형을 빠르게 훑으며 식량부터 확보한다.", p: "만철"},
-                {t: "혼란에 빠진 사람들을 진정시키고 체계적인 질서를 세운다.", p: "최주임"},
-                {t: "가족들이 다치지 않게 품에 안고 쉴 곳부터 마련한다.", p: ["숙이", "순남"]},
-                {t: "눈에 띄지 않는 곳에 숨어 상황이 안정될 때까지 지켜본다.", p: ["미즈코", "유코"]}
-            ]
-        },
-        {
-            q: "구제소 내에 큰 소동이 일어났다. 누군가 당신의 물건에 손을 댄 것 같다면?",
-            a: [
-                {t: "더 큰 사고가 나기 전에 단호하고 압도적인 힘으로 제압한다.", p: "보안대원"},
-                {t: "서로 오해가 있을 것이다. 대화로 해결하기 위해 중재에 나선다.", p: "원창"},
-                {t: "이 갈등을 이용해 내가 얻을 수 있는 이득이 무엇인지 계산한다.", p: "선녀"},
-                {t: "싸우고 있는 사람들을 떼어놓으며 궂은 일을 자처해 돕는다.", p: ["옥이", "훈이"]}
-            ]
-        },
-        {
-            q: "살아남기 위해 가장 중요하게 지켜야 할 가치는 무엇인가?",
-            a: [
-                {t: "어떤 풍파가 와도 억척스럽게 버텨내는 끈질긴 생명력", p: "끝순"},
-                {t: "혼돈의 시대일수록 잃지 말아야 할 인간의 신념", p: ["영호", "유코"]},
-                {t: "오랜 세월을 견디게 해준 뿌리 깊은 가족의 정", p: ["옥이", "이노인"]},
-                {t: "피 한 방울 섞이지 않았어도 내 사람을 끝까지 책임지는 것", p: "명숙"}
-            ]
-        },
-        {
-            q: "누군가 당신의 과거를 의심하며 날카로운 질문을 던지기 시작한다면?",
-            a: [
-                {t: "해박한 지식과 논리적인 언변으로 상대를 설득시킨다.", p: "원창"},
-                {t: "내 권위를 위협하는 자에게 눈을 부라리며 강하게 압박한다.", p: "장씨"},
-                {t: "과거를 숨기기 위해 아무 말도 하지 못한 채 고개를 떨군다.", p: ["미즈코", "유코"]},
-                {t: "나에게 유리한 쪽으로 정보를 흘려 상대의 의도를 흐트러뜨린다.", p: "선녀"}
-            ]
-        },
-        {
-            q: "조국으로 향하는 기차가 도착했다. 하지만 자리가 턱없이 부족하다면?",
-            a: [
-                {t: "가장 먼저 기차에 올라타 내 가족이 앉을 자리를 선점한다.", p: "만철"},
-                {t: "나보다 더 힘든 노약자와 아이들이 먼저 탈 수 있게 양보한다.", p: "숙이"},
-                {t: "가족들의 손을 꼭 잡고 우리 중 한 명이라도 낙오되지 않게 챙킨다.", p: "순남"},
-                {t: "전체적인 상황을 보고 누구를 먼저 태울지 효율적으로 판단한다.", p: "최주임"}
-            ]
-        },
-        {
-            q: "지치고 배고픈 아이들이 당신의 치맛자락을 붙잡는다면?",
-            a: [
-                {t: "아이들이 안심할 수 있도록 다정하게 안아주고 다독여준다.", p: "숙이"},
-                {t: "내 몫으로 아껴두었던 주먹밥을 슬쩍 아이의 손에 쥐여준다.", p: "옥이"},
-                {t: "지금은 내 코가 석 자다. 아이들을 외면하며 가던 길을 간다.", p: "끝순"},
-                {t: "아이들이 시끄럽게 굴지 못하도록 무섭게 소리를 질러 쫓아낸다.", p: "장씨"}
-            ]
-        },
-        {
-            q: "어두운 과거의 비밀이 당신을 괴롭힌다. 당신은 어떻게 대처하겠는가?",
-            a: [
-                {t: "과거는 과거일 뿐이다. 이름까지 바꾸고 철저히 새 삶을 산다.", p: "유코"},
-                {t: "모든 아픔을 묵묵히 가슴 속에 묻고 묵직하게 견뎌낸다.", p: "이노인"},
-                {t: "비밀이 알려지더라도 소중한 이들을 지키기 위해 정면돌파한다.", p: "명숙"},
-                {t: "과거 따위 상관없다. 오늘 하루 배불리 먹는 것이 중요하다.", p: "만철"}
-            ]
-        },
-        {
-            q: "모두를 위한 희생과 나의 안위가 충돌하는 결정적인 순간, 당신은?",
-            a: [
-                {t: "대의를 위해서라면 나 한 몸 기꺼이 희생할 각오가 되어 있다.", p: "원창"},
-                {t: "세상은 결국 각자도생이다. 오직 나의 생존만을 생각한다.", p: "선녀"},
-                {t: "죽을 고비를 넘기더라도 내 곁의 동료들과 끝까지 의리를 지킨다.", p: "훈이"},
-                {t: "어떤 선택이 옳은지 끊임없이 고뇌하며 괴로워한다.", p: "영호"}
-            ]
-        }
+        { q: "낯선 땅 만주, 황량한 구제소에 발을 내디뎠다. 가장 먼저 무엇을 하겠는가?", a: [ {t: "이곳의 규칙과 주변 지형을 빠르게 훑으며 식량부터 확보한다.", p: "만철"}, {t: "혼란에 빠진 사람들을 진정시키고 체계적인 질서를 세운다.", p: "최주임"}, {t: "가족들이 다치지 않게 품에 안고 쉴 곳부터 마련한다.", p: ["숙이", "순남"]}, {t: "눈에 띄지 않는 곳에 숨어 상황이 안정될 때까지 지켜본다.", p: ["미즈코", "유코"]} ] },
+        { q: "구제소 내에 큰 소동이 일어났다. 누군가 당신의 물건에 손을 댄 것 같다면?", a: [ {t: "더 큰 사고가 나기 전에 단호하고 압도적인 힘으로 제압한다.", p: "보안대원"}, {t: "서로 오해가 있을 것이다. 대화로 해결하기 위해 중재에 나선다.", p: "원창"}, {t: "이 갈등을 이용해 내가 얻을 수 있는 이득이 무엇인지 계산한다.", p: "선녀"}, {t: "싸우고 있는 사람들을 떼어놓으며 궂은 일을 자처해 돕는다.", p: ["옥이", "훈이"]} ] },
+        { q: "살아남기 위해 가장 중요하게 지켜야 할 가치는 무엇인가?", a: [ {t: "어떤 풍파가 와도 억척스럽게 버텨내는 끈질긴 생명력", p: "끝순"}, {t: "혼돈의 시대일수록 잃지 말아야 할 인간의 신념", p: ["영호", "유코"]}, {t: "오랜 세월을 견디게 해준 뿌리 깊은 가족의 정", p: ["옥이", "이노인"]}, {t: "피 한 방울 섞이지 않았어도 내 사람을 끝까지 책임지는 것", p: "명숙"} ] },
+        { q: "누군가 당신의 과거를 의심하며 날카로운 질문을 던지기 시작한다면?", a: [ {t: "해박한 지식과 논리적인 언변으로 상대를 설득시킨다.", p: "원창"}, {t: "내 권위를 위협하는 자에게 눈을 부라리며 강하게 압박한다.", p: "장씨"}, {t: "과거를 숨기기 위해 아무 말도 하지 못한 채 고개를 떨군다.", p: ["미즈코", "유코"]}, {t: "나에게 유리한 쪽으로 정보를 흘려 상대의 의도를 흐트러뜨린다.", p: "선녀"} ] },
+        { q: "조국으로 향하는 기차가 도착했다. 하지만 자리가 턱없이 부족하다면?", a: [ {t: "가장 먼저 기차에 올라타 내 가족이 앉을 자리를 선점한다.", p: "만철"}, {t: "나보다 더 힘든 노약자와 아이들이 먼저 탈 수 있게 양보한다.", p: "숙이"}, {t: "가족들의 손을 꼭 잡고 우리 중 한 명이라도 낙오되지 않게 챙킨다.", p: "순남"}, {t: "전체적인 상황을 보고 누구를 먼저 태울지 효율적으로 판단한다.", p: "최주임"} ] },
+        { q: "지치고 배고픈 아이들이 당신의 치맛자락을 붙잡는다면?", a: [ {t: "아이들이 안심할 수 있도록 다정하게 안아주고 다독여준다.", p: "숙이"}, {t: "내 몫으로 아껴두었던 주먹밥을 슬쩍 아이의 손에 쥐여준다.", p: "옥이"}, {t: "지금은 내 코가 석 자다. 아이들을 외면하며 가던 길을 간다.", p: "끝순"}, {t: "아이들이 시끄럽게 굴지 못하도록 무섭게 소리를 질러 쫓아낸다.", p: "장씨"} ] },
+        { q: "어두운 과거의 비밀이 당신을 괴롭힌다. 당신은 어떻게 대처하겠는가?", a: [ {t: "과거는 과거일 뿐이다. 이름까지 바꾸고 철저히 새 삶을 산다.", p: "유코"}, {t: "모든 아픔을 묵묵히 가슴 속에 묻고 묵직하게 견뎌낸다.", p: "이노인"}, {t: "비밀이 알려지더라도 소중한 이들을 지키기 위해 정면돌파한다.", p: "명숙"}, {t: "과거 따위 상관없다. 오늘 하루 배불리 먹는 것이 중요하다.", p: "만철"} ] },
+        { q: "모두를 위한 희생과 나의 안위가 충돌하는 결정적인 순간, 당신은?", a: [ {t: "대의를 위해서라면 나 한 몸 기꺼이 희생할 각오가 되어 있다.", p: "원창"}, {t: "세상은 결국 각자도생이다. 오직 나의 생존만을 생각한다.", p: "선녀"}, {t: "죽을 고비를 넘기더라도 내 곁의 동료들과 끝까지 의리를 지킨다.", p: "훈이"}, {t: "어떤 선택이 옳은지 끊임없이 고뇌하며 괴로워한다.", p: "영호"} ] }
     ];
 
     const results = {
-        "원창":{t:"이상적 리더, 원창",d:"지식을 나누며 희망을 찾는 고결함이 닮았네요.",i:"http://bit.ly/4cAsD2w"},
-        "순남":{t:"따뜻한 버팀목, 순남",d:"가족을 지키기 위한 강한 생활력을 가졌습니다.",i:"https://bit.ly/4mSnRAD"},
-        "명숙":{t:"강인한 수호자, 명숙",d:"겉은 차갑지만 속은 누구보다 뜨겁습니다.",i:"https://bit.ly/4tJEmlh"},
-        "미즈코":{t:"경계의 이방인, 미즈코",d:"불안 속에서도 싹트는 생존 의지가 닮았습니다.",i:"https://bit.ly/4ebjfU1"},
-        "만철":{t:"냉철한 전략가, 만철",d:"기민한 상황 판단력이 당신의 가장 큰 무기입니다.",i:"https://bit.ly/4eJ3sfh"},
-        "끝순":{t:"억척스런 생존자, 끝순",d:"결코 꺾이지 않는 잡초 같은 생명력을 가졌습니다.",i:"https://zrr.kr/kACTvt"},
-        "선녀":{t:"현실적 실리주의자, 선녀",d:"도덕보다 눈앞의 실리를 위해 움직이는 승부사입니다.",i:"https://zrr.kr/IuV4ns"},
-        "장씨":{t:"검열하는 권력자, 장씨",d:"타인을 엄격하게 심판하지만, 결국 인간적인 모순이 닮았습니다.",i:"https://zrr.kr/v67C5W"},
-        "이노인":{t:"묵직한 뿌리, 이노인",d:"고향 땅을 향한 일념 하나로 모진 세월을 견디는 당신.",i:"https://zrr.kr/GzTyOG"},
-        "숙이":{t:"희망의 상징, 숙이",d:"어둠 속에서도 빛을 찾아내는 긍정적인 성격입니다.",i:"https://zrr.kr/DICZ7E"},
-        "옥이":{t:"순수한 영혼, 옥이",d:"해맑음을 잃지 않아 모두에게 미소를 되찾아주는 보물입니다.",i:"https://zrr.kr/HVl6HJ"},
-        "훈이":{t:"의리의 사나이, 훈이",d:"남의 일도 내 일처럼 돕고 끝까지 함께하는 당신.",i:"https://zrr.kr/QNJdTt"},
-        "영호":{t:"고뇌하는 지식인, 영호",d:"끊임없이 '인간이란 무엇인가' 질문을 던지는 정직한 관찰자.",i:"https://zrr.kr/kT1d1l"},
-        "최주임":{t:"기민한 관리자, 최주임", d:"질서와 실리 사이에서 균형을 잡으며 상황을 통제합니다.",i:"https://zrr.kr/dqWJwu"},
-        "보안대원":{t:"철저한 집행자, 보안대원", d:"혼란을 막기 위해 때로는 냉정하게 원칙을 지킵니다.",i:"https://zrr.kr/dqWJwu"},
-        "유코":{t:"상처 입은 유랑자, 유코",d:"과거의 굴레에서 벗어나기 위해 처절하게 몸부림치는 당신.",i:"https://zrr.kr/J8OoHI"}
+        "원창":{t:"이상적 리더, 원창",d:"지식을 나누며 해방된 조국의 미래를 꿈꾸는 당신. 고결한 신념이 닮았습니다.",i:"http://bit.ly/4cAsD2w"},
+        "순남":{t:"따뜻한 버팀목, 순남",d:"강한 생활력으로 가족을 지켜내는 당신은 모두가 의지하는 사람입니다.",i:"https://bit.ly/4mSnRAD"},
+        "명숙":{t:"강인한 수호자, 명숙",d:"거친 세상 속에서도 내 사람을 지키기 위해 사투를 벌이는 뜨거운 심장을 가졌습니다.",i:"https://bit.ly/4tJEmlh"},
+        "미즈코":{t:"경계의 이방인, 미즈코",d:"불안한 현실 속에서도 묵묵히 살아남으려 노력하는 당신의 의지를 응원합니다.",i:"https://bit.ly/4ebjfU1"},
+        "만철":{t:"냉철한 전략가, 만철",d:"상황 판단이 빠르고 실속을 챙릴 줄 아는 당신은 생존에 최적화된 리더입니다.",i:"https://bit.ly/4eJ3sfh"},
+        "끝순":{t:"억척스런 생존자, 끝순",d:"어떤 척박한 땅에서도 꽃을 피울 잡초 같은 강인한 생명력을 가졌습니다.",i:"https://zrr.kr/kACTvt"},
+        "선녀":{t:"현실적 실리주의자, 선녀",d:"도덕보다 실리를, 과거보다 현재의 생존을 선택하는 날카로운 승부사입니다.",i:"https://zrr.kr/IuV4ns"},
+        "장씨":{t:"검열하는 권력자, 장씨",d:"겉으로는 엄격하고 강해 보이지만, 속으로는 누구보다 불안을 느끼는 인간적인 면모가 있습니다.",i:"https://zrr.kr/v67C5W"},
+        "이노인":{t:"묵직한 뿌리, 이노인",d:"모진 세월을 견디며 고향을 향한 일념으로 버티는 당신은 우리 시대의 중심입니다.",i:"https://zrr.kr/GzTyOG"},
+        "숙이":{t:"희망의 상징, 숙이",d:"어둠 속에서도 밝은 웃음을 잃지 않고 가족을 챙기는 당신은 구제소의 햇살입니다.",i:"https://zrr.kr/DICZ7E"},
+        "옥이":{t:"순수한 영혼, 옥이",d:"작은 것 하나에도 행복을 느끼는 순수함이 주변 사람들을 미소 짓게 합니다.",i:"https://zrr.kr/HVl6HJ"},
+        "훈이":{t:"의리의 사나이, 훈이",d:"어려운 상황에서도 끝까지 의리를 지키는 당신은 최고의 동료입니다.",i:"https://zrr.kr/QNJdTt"},
+        "영호":{t:"고뇌하는 지식인, 영호",d:"'인간다운 삶'에 대해 끊임없이 질문을 던지는 당신은 정직한 관찰자입니다.",i:"https://zrr.kr/kT1d1l"},
+        "최주임":{t:"기민한 관리자, 최주임", d:"혼란 속에서 질서를 찾고 효율적인 길을 제시하는 이성적인 분이시군요.",i:"https://zrr.kr/dqWJwu"},
+        "보안대원":{t:"철저한 집행자, 보안대원", d:"원칙과 규율을 중요시하며, 때로는 냉정하게 상황을 통제하는 결단력이 있습니다.",i:"https://zrr.kr/dqWJwu"},
+        "유코":{t:"상처 입은 유랑자, 유코",d:"아픈 과거를 뒤로하고 새로운 삶을 위해 처절하게 몸부림치는 당신의 용기를 응원합니다.",i:"https://zrr.kr/J8OoHI"}
     };
 
-    const ctaMap = { "원창":"한글 강습회를 하던 그가 마주한 해방의 끝을 확인하세요", "만철":"지독한 생존 본능이 선택한 길을 무대에서 확인하세요", "명숙":"남남인 미즈코를 지키려 했던 그녀의 사투를 확인하세요", "순남":"가족을 지키기 위해 견뎌낸 시간을 함께하세요", "미즈코":"말을 잃고 숨죽여야 했던 그녀의 진심을 확인하세요", "끝순":"억척스럽게 버틴 삶이 마주한 결말을 확인하세요", "선녀":"아편에 취해 포주로 살아야 했던 그녀의 비밀을 확인하세요", "장씨":"배고픈 역사 앞에 무너진 권위, 그 비극을 확인하세요", "이노인":"고향 땅을 향한 노인의 간절한 기도를 확인하세요", "숙이":"전쟁이 남긴 아이들의 눈망울을 기억해 주세요", "옥이":"막내 딸 옥이가 꿈꿨던 해방된 조국을 확인하세요", "훈이":"끝까지 곁을 지킨 친구의 의리를 무대에서 확인하세요", "영호":"지식인이 마주한 참담한 현실을 함께 고민해 주세요", "최주임":"질서를 유지하려 했던 그의 선택을 확인하세요", "보안대원":"규율 뒤에 숨겨진 인간성을 확인하세요", "유코":"시대에 버려진 그녀들의 아픈 소리를 들어주세요" };
+    const ctaMap = { "원창":"그가 마주한 해방의 끝을 확인하세요", "만철":"지독한 생존 본능이 선택한 길을 확인하세요", "명숙":"미즈코를 지키려 했던 그녀의 사투를 확인하세요", "순남":"가족을 위해 견뎌낸 시간을 함께하세요", "미즈코":"말을 잃고 숨죽여야 했던 그녀의 진심을 확인하세요", "끝순":"억척스럽게 버틴 삶이 마주한 결말을 확인하세요", "선녀":"포주로 살아야 했던 그녀의 비밀을 확인하세요", "장씨":"역사 앞에 무너진 권위, 그 비극을 확인하세요", "이노인":"고향을 향한 노인의 간절한 기도를 확인하세요", "숙이":"전쟁이 남긴 아이들의 눈망울을 기억해 주세요", "옥이":"옥이가 꿈꿨던 해방된 조국을 확인하세요", "훈이":"끝까지 곁을 지킨 친구의 의리를 확인하세요", "영호":"지식인이 마주한 참담한 현실을 함께해 주세요", "최주임":"질서를 유지하려 했던 그의 선택을 확인하세요", "보안대원":"규율 뒤에 숨겨진 인간성을 확인하세요", "유코":"시대에 버려진 그녀들의 아픈 소리를 들어주세요" };
 
     let currentIndex=0; let scores={};
     function startQuiz(){ document.getElementById('start').style.display='none'; document.getElementById('quiz').style.display='block'; showQ(); }
@@ -159,7 +106,7 @@
         document.getElementById('question').innerText=q.q;
         const box=document.getElementById('answers'); box.innerHTML="";
         q.a.forEach(answer=>{
-            const b=document.createElement('button'); b.innerText=answer.t; b.className="answer-vintage rounded";
+            const b=document.createElement('button'); b.innerText=answer.t; b.className="answer-vintage";
             b.onclick=function(){ next(answer.p); }; box.appendChild(b);
         });
     }
@@ -173,7 +120,7 @@
         const keys=Object.keys(scores);
         const maxScore = Math.max(...Object.values(scores));
         const winners = keys.filter(key => scores[key] === maxScore);
-        const winner = winners[Math.floor(Math.random() * winners.length)]; // 동점자 랜덤
+        const winner = winners[Math.floor(Math.random() * winners.length)]; 
         const r=results[winner];
         document.getElementById('result-title').innerText=r.t;
         document.getElementById('result-desc').innerText=r.d;
